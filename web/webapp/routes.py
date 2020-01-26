@@ -17,7 +17,7 @@ def get_data():
         client_influx.switch_database("demodb")
         query = 'select "Waarde" from {0} WHERE (Serienummer_meter=$serial) AND time >= now()- 30m'.format(measurement)
         result = client_influx.query(query, bind_params={'serial': serial_number})
-        return result.raw["series"][0]
+        return {'values': result.raw["series"][0]["values"]}
 
 
 @app.route('/electricityconsumption', methods=["GET"])
@@ -34,7 +34,7 @@ def get_consumption():
         client_influx.switch_database("demodb")
         query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= $startofmonth'.format(measurement)
         result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
-        return result.raw["series"][0]
+        return {'values': result.raw["series"][0]["values"]}
 
 
 @app.route('/solarpanelyield', methods=["GET"])
@@ -51,4 +51,4 @@ def get_production():
         client_influx.switch_database("demodb")
         query = 'select "Waarde" from {0} WHERE (Serienummer_meter=$serial) AND time >= $startofmonth'.format(measurement)
         result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
-        return result.raw["series"][0]
+        return {'values': result.raw["series"][0]["values"]}

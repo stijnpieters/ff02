@@ -40,9 +40,9 @@ def get_imports():
         consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
         production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
         if consumption - production < 0:
-            return abs(consumption - production)
+            return {'value': abs(consumption - production)}
         else:
-            return 0
+            return {'value': 0}
 
 
 @app.route('/export', methods=["GET"])
@@ -50,9 +50,9 @@ def get_exports():
     consumption = get_consumption()["values"][0][1]
     production = get_production()["values"][0][1]
     if consumption - production > 0:
-        return abs(production)
+        return {'value': abs(production)}
     else:
-        return 0
+        return {'value': 0}
 
 
 @app.route('/selfconsumedpvsolarpanelyield', methods=["GET"])

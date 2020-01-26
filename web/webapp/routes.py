@@ -14,7 +14,7 @@ def get_data():
         measurement = request.args["measurement"]
         client_influx = InfluxDBClient("35.233.68.4", 8086)
         client_influx.switch_database("demodb")
-        result = client_influx.query("select * from {0} where time >= now()-30m and serienummer_meter=$serial".format(measurement), bind_params={'measurement': measurement, 'serial': serial_number})
-        data = str(list(result.get_points(measurement=measurement)))
-        return result.raw
+        query = 'select "Waarde" from {0} WHERE (Serienummer_meter=$serial) AND time >= now()- 30m'.format(measurement)
+        result = client_influx.query(query, bind_params={'serial': serial_number})
+        return result.raw["series"][0]["values"]
 

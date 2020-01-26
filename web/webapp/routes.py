@@ -6,7 +6,7 @@ import threading
 from random import randint
 
 
-@app.route('/data', methods="GET")
+@app.route('/data', methods=["GET"])
 def get_data():
     if request.method == "GET":
         serial_number = request.args["serial"]

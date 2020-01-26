@@ -37,7 +37,7 @@ def get_data(serial, measurement):
 def get_imports():
     if request.method == "GET":
         serial = request.args["serial"]
-        consumption = get_data(serial, "Actueel_vermogen_van_net")["values"][0][1]
+        consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
         production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
         if consumption - production < 0:
             return abs(consumption - production)

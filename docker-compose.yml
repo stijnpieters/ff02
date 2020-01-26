@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+  webapp:
+    image: stijnpietersnmct/ff02-webapp
+    build: ./web
+    command: uwsgi --ini app.ini
+    expose:
+      - 5000
+  nginx:
+    image: stijnpietersnmct/ff02-nginx
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - webapp

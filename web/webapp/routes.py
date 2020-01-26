@@ -4,7 +4,7 @@ import socket
 import time
 import threading
 from influxdb import InfluxDBClient
-sfrom random import randint
+from random import randint
 
 
 @app.route('/data', methods=["GET"])

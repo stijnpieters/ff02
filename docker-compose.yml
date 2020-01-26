@@ -22,3 +22,5 @@ services:
     volumes:
       - influxdb:/var/lib/influxdb
 
+volumes:
+  influxdb

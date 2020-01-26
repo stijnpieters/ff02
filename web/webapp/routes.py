@@ -23,18 +23,32 @@ def get_data():
 @app.route('/electricityconsumption', methods=["GET"])
 def get_consumption():
     if request.method == "GET":
-        serial_number = request.args["serial"]
+        if "grouped" in request.args:
+            serial_number = request.args["serial"]
 
-        today = datetime.date.today()
-        dt = datetime.datetime(today.year, today.month, 1)
-        startofmonth = time.mktime(dt.timetuple())
+            today = datetime.date.today()
+            dt = datetime.datetime(today.year, today.month, 1)
+            startofmonth = time.mktime(dt.timetuple())
 
-        measurement = "Actueel_vermogen_uit_net"
-        client_influx = InfluxDBClient("35.233.68.4", 8086)
-        client_influx.switch_database("demodb")
-        query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= $startofmonth'.format(measurement)
-        result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
-        return {'values': result.raw["series"][0]["values"]}
+            measurement = "Actueel_vermogen_uit_net"
+            client_influx = InfluxDBClient("35.233.68.4", 8086)
+            client_influx.switch_database("demodb")
+            query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= $startofmonth GROUP BY time(1h)'.format(measurement)
+            result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
+            return {'values': result.raw["series"][0]["values"]}
+        else:
+            serial_number = request.args["serial"]
+
+            today = datetime.date.today()
+            dt = datetime.datetime(today.year, today.month, 1)
+            startofmonth = time.mktime(dt.timetuple())
+
+            measurement = "Actueel_vermogen_uit_net"
+            client_influx = InfluxDBClient("35.233.68.4", 8086)
+            client_influx.switch_database("demodb")
+            query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= $startofmonth'.format(measurement)
+            result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
+            return {'values': result.raw["series"][0]["values"]}
 
 
 @app.route('/solarpanelyield', methods=["GET"])

@@ -6,6 +6,8 @@ services:
     command: uwsgi --ini app.ini
     expose:
       - 5000
+    depends_on:
+      - influx
   nginx:
     image: stijnpietersnmct/ff02-nginx
     build: ./nginx
@@ -13,3 +15,10 @@ services:
       - 80:80
     depends_on:
       - webapp
+  influx:
+    image: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+    - influxdb:/var/lib/influxdb
+

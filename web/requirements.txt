@@ -2,3 +2,4 @@ Flask==1.1.1
 uWSGI==2.0.18
 Flask-Login==0.4.1
 influxdb==5.2.3
+Flask-Cors==3.0.8

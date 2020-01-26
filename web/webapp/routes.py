@@ -6,6 +6,7 @@ import threading
 import datetime
 from influxdb import InfluxDBClient
 from random import randint
+from flask_cors import CORS
 
 
 @app.route('/electricityconsumption', methods=["GET"])

@@ -92,6 +92,7 @@ def get_grouped_consumption():
     if request.method == "GET":
         today = datetime.date.today()
         measurement = "Actueel_vermogen_uit_net"
+        serial = request.args["serial"]
 
         client_influx = InfluxDBClient("35.233.68.4", 8086)
         client_influx.switch_database("demodb")
@@ -106,6 +107,7 @@ def get_grouped_solarpanelyield():
     if request.method == "GET":
         today = datetime.date.today()
         measurement = "Actueel_vermogen_naar_net"
+        serial = request.args["serial"]
 
         client_influx = InfluxDBClient("35.233.68.4", 8086)
         client_influx.switch_database("demodb")

@@ -85,3 +85,31 @@ def get_selfusage():
         consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
         selfconsumedpvsolarpanelyield = get_selfconsumedpvsolarpanelyield()['value']
         return {'value': selfconsumedpvsolarpanelyield / consumption}
+
+
+@app.route('/groupedconsumption', methods="GET")
+def get_grouped_consumption():
+    if request.method == "GET":
+        today = datetime.date.today()
+        measurement = "Actueel_vermogen_uit_net"
+
+        client_influx = InfluxDBClient("35.233.68.4", 8086)
+        client_influx.switch_database("demodb")
+        query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= now() - {1}d GROUP BY time(1h)'.format(
+            measurement, today.day - 1)
+        result = client_influx.query(query, bind_params={'serial': serial})
+        return {'values': result.raw["series"][0]["values"]}
+
+
+@app.route('/groupedsolarpanelyield', methods="GET")
+def get_grouped_solarpanelyield():
+    if request.method == "GET":
+        today = datetime.date.today()
+        measurement = "Actueel_vermogen_naar_net"
+
+        client_influx = InfluxDBClient("35.233.68.4", 8086)
+        client_influx.switch_database("demodb")
+        query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= now() - {1}d GROUP BY time(1h)'.format(
+            measurement, today.day - 1)
+        result = client_influx.query(query, bind_params={'serial': serial})
+        return {'values': result.raw["series"][0]["values"]}

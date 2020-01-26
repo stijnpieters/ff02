@@ -16,5 +16,5 @@ def get_data():
         client_influx.switch_database("demodb")
         query = 'select "Waarde" from {0} WHERE (Serienummer_meter=$serial) AND time >= now()- 30m'.format(measurement)
         result = client_influx.query(query, bind_params={'serial': serial_number})
-        return result.raw["series"][0]["values"]
+        return result.raw["series"][0]
 

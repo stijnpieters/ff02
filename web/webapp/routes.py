@@ -49,3 +49,28 @@ def get_production():
         query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= now() - {1}d'.format(measurement, today.day - 1)
         result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
         return {'values': result.raw["series"][0]["values"]}
+
+
+@app.route('/import', methods=["GET"])
+def get_imports():
+    consumption = get_consumption()["values"][0][1]
+    production = get_production()["values"][0][1]
+    if consumption - production < 0:
+        return abs(consumption - production)
+    else:
+        return 0
+
+
+@app.route('/export', methods=["GET"])
+def get_exports():
+    consumption = get_consumption()["values"][0][1]
+    production = get_production()["values"][0][1]
+    if consumption - production > 0:
+        return abs(production)
+    else:
+        return 0
+
+
+@app.route('/selfconsumedpvsolarpanelyield', methods=["GET"])
+def get_selfconsumedpvsolarpanelyield():
+    pass

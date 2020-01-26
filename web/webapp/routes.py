@@ -25,6 +25,8 @@ def get_consumption():
     if request.method == "GET":
         serial_number = request.args["serial"]
 
+        today = datetime.date.today()
+
         measurement = "Actueel_vermogen_uit_net"
         client_influx = InfluxDBClient("35.233.68.4", 8086)
         client_influx.switch_database("demodb")

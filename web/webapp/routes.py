@@ -47,7 +47,7 @@ def get_production():
         client_influx = InfluxDBClient("35.233.68.4", 8086)
         client_influx.switch_database("demodb")
         query = 'select sum("Waarde") from {0} WHERE (Serienummer_meter=$serial) AND time >= now() - {1}d'.format(measurement, today.day - 1)
-        result = client_influx.query(query, bind_params={'serial': serial_number, 'startofmonth': startofmonth})
+        result = client_influx.query(query, bind_params={'serial': serial_number})
         return {'values': result.raw["series"][0]["values"]}
 
 

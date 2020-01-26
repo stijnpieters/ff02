@@ -47,8 +47,8 @@ def get_imports():
 
 @app.route('/export', methods=["GET"])
 def get_exports():
-    consumption = get_consumption()["values"][0][1]
-    production = get_production()["values"][0][1]
+    consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
+    production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
     if consumption - production > 0:
         return {'value': abs(production)}
     else:

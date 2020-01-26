@@ -74,7 +74,7 @@ def get_selfconsumption():
     if request.method == "GET":
         serial = request.args["serial"]
         production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
-        selfconsumedpvsolarpanelyield = get_selfconsumedpvsolarpanelyield()
+        selfconsumedpvsolarpanelyield = get_selfconsumedpvsolarpanelyield()['value']
         return {'value': selfconsumedpvsolarpanelyield / production}
 
 
@@ -83,5 +83,5 @@ def get_selfusage():
     if request.method == "GET":
         serial = request.args["serial"]
         consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
-        selfconsumedpvsolarpanelyield = get_selfconsumedpvsolarpanelyield()
+        selfconsumedpvsolarpanelyield = get_selfconsumedpvsolarpanelyield()['value']
         return {'value': selfconsumedpvsolarpanelyield / consumption}

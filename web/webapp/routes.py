@@ -87,7 +87,7 @@ def get_selfusage():
         return {'value': selfconsumedpvsolarpanelyield / consumption}
 
 
-@app.route('/groupedconsumption', methods="GET")
+@app.route('/groupedconsumption', methods=["GET"])
 def get_grouped_consumption():
     if request.method == "GET":
         today = datetime.date.today()
@@ -101,7 +101,7 @@ def get_grouped_consumption():
         return {'values': result.raw["series"][0]["values"]}
 
 
-@app.route('/groupedsolarpanelyield', methods="GET")
+@app.route('/groupedsolarpanelyield', methods=["GET"])
 def get_grouped_solarpanelyield():
     if request.method == "GET":
         today = datetime.date.today()

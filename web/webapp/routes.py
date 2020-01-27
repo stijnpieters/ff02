@@ -37,25 +37,29 @@ def get_data(serial, measurement):
 @app.route('/import', methods=["GET"])
 def get_imports():
     if request.method == "GET":
-        serial = request.args["serial"]
-        consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
-        production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
-        if consumption - production < 0:
-            return {'value': abs(consumption - production)}
-        else:
-            return {'value': 0}
+        serial_number = request.args["serial"]
+        return get_data(serial_number, "Actueel_vermogen_uit_net")
+        # serial = request.args["serial"]
+        # consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
+        # production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
+        # if consumption - production < 0:
+        #     return {'value': abs(consumption - production)}
+        # else:
+        #     return {'value': 0}
 
 
 @app.route('/export', methods=["GET"])
 def get_exports():
     if request.method == "GET":
-        serial = request.args["serial"]
-        consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
-        production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
-        if consumption - production > 0:
-            return {'value': abs(production)}
-        else:
-            return {'value': 0}
+        serial_number = request.args["serial"]
+        return get_data(serial_number, "Actueel_vermogen_naar_net")
+        # serial = request.args["serial"]
+        # consumption = get_data(serial, "Actueel_vermogen_uit_net")["values"][0][1]
+        # production = get_data(serial, "Actueel_vermogen_naar_net")["values"][0][1]
+        # if consumption - production > 0:
+        #     return {'value': abs(production)}
+        # else:
+        #     return {'value': 0}
 
 
 @app.route('/selfconsumedpvsolarpanelyield', methods=["GET"])

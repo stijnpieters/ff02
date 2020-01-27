@@ -9,12 +9,6 @@ from random import randint
 from flask_cors import CORS
 
 
-@app.after_request
-def add_header(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
-
-
 @app.route('/electricityconsumption', methods=["GET"])
 def get_consumption():
     if request.method == "GET":
